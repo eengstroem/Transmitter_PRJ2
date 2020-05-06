@@ -6,14 +6,22 @@
  */ 
 
 #include <avr/io.h>
-
+#define F_CPU 16000000		//Frequency
+#define BAUD 9600		//Baud rate
+#define BRC	((F_CPU/16/BAUD) - 1)	//Baud rate calculation and register
 
 int main(void)
 {
-    /* Replace with your application code */
+   UBRR0H = (BRC >> 8);   //Set most and least important bits, according to green book
+   UBRR0L = BRC;
+   
+   UCSR0B = (1 << TXEN0);
+   UCSR0B = (1 << UCSZ01) | (1 << UCSZ00);
+
     while (1) 
     {
-		int x = 2;
+      UDR0 = '0001';
     }
 }
+
 
